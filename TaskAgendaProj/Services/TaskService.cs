@@ -12,13 +12,13 @@ namespace TaskAgendaProj.Services
     public interface ITaskService
     {
 
-        IEnumerable<TaskGetModel> GetAll(DateTime? from = null, DateTime? to = null);
+        PaginatedList<TaskGetModel> GetAll(int page, DateTime? from = null, DateTime? to = null);
 
         Task GetById(int id);
 
-        Task Create(TaskPostModel user);
+        Task Create(TaskPostModel task);
 
-        Task Upsert(int id, Task user);
+        Task Upsert(int id, Task task);
 
         Task Delete(int id);
        
@@ -33,18 +33,20 @@ namespace TaskAgendaProj.Services
             this.context = context;
         }
 
+
         public Task Create(TaskPostModel task)
         {
-        Task addTa = TaskPostModel.ToTask(task);
-        context.Tasks.Add(addTa);
-        context.SaveChanges();
-        return addTa;
-    }
+            
+            Task toAdd = TaskPostModel.ToTask(task);
+            context.Tasks.Add(toAdd);
+            context.SaveChanges();
+            return toAdd;
+        }
 
         public Task Delete(int id)
         {
             var existing = context.Tasks
-                .Include(x => x.Comments)
+                //.Include(x => x.Comments)
                 .FirstOrDefault(task => task.Id == id);
             if (existing == null)
             {
@@ -55,25 +57,29 @@ namespace TaskAgendaProj.Services
             return existing;
         }
 
-        public IEnumerable<TaskGetModel> GetAll(DateTime? from = null, DateTime? to = null)
+        public PaginatedList<TaskGetModel> GetAll(int page, DateTime? from = null, DateTime? to = null)
         {
             IQueryable<Task> result = context
                 .Tasks
                 .Include(x => x.Comments);
-            if ((from == null && to == null))
+            PaginatedList<TaskGetModel> paginatedResult = new PaginatedList<TaskGetModel>();
+            paginatedResult.CurrentPage = page;
 
-            {
-                return result.Select(t => TaskGetModel.FromTask(t));
-            }
             if (from != null)
             {
-                result = result.Where(e => e.Deadline >= from);
+                result = result.Where(f => f.Deadline >= from);
             }
             if (to != null)
             {
-                result = result.Where(e => e.Deadline <= to);
+                result = result.Where(f => f.Deadline <= to);
             }
-            return result.Select(t => TaskGetModel.FromTask(t));
+            paginatedResult.NumberOfPages = (result.Count() - 1) / PaginatedList<TaskGetModel>.EntriesPerPage + 1;
+            result = result
+                .Skip((page - 1) * PaginatedList<TaskGetModel>.EntriesPerPage)
+                .Take(PaginatedList<TaskGetModel>.EntriesPerPage);
+            paginatedResult.Entries = result.Select(f => TaskGetModel.FromTask(f)).ToList();
+
+            return paginatedResult;
         }
 
         public Task GetById(int id)

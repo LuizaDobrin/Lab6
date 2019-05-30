@@ -34,5 +34,6 @@ namespace TaskAgendaProj.Models
         public DateTime? DateTimeClosedAt { get; set; }
 
         public List<Comment> Comments { get; set; }
+       // public User Owner { get; set; }
     }
 }

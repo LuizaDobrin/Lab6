@@ -31,12 +31,14 @@ namespace TaskAgendaProj.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // GET: api/tasks
         [HttpGet]
-        public IEnumerable<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
+        public PaginatedList<TaskGetModel> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to, [FromQuery]int page = 1)
         {
-            return taskService.GetAll(from, to);
+            // TODO: make pagination work with /api/tasks/page/<page number>
+            page = Math.Max(page, 1);
+            return taskService.GetAll(page, from, to);
         }
 
-       
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // GET: api/tasks/2
@@ -55,7 +57,6 @@ namespace TaskAgendaProj.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // POST: api/Expenses
-        [Authorize]
         [HttpPost]
         public void Post([FromBody] TaskPostModel task)
         {
@@ -64,6 +65,7 @@ namespace TaskAgendaProj.Controllers
         
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
         // PUT: api/Expenses/2
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Task task)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace TaskAgendaProj.Services
         UserGetModel Authenticate(string username, string password);
         UserGetModel Register(RegisterPostModel registerInfo);
         IEnumerable<UserGetModel> GetAll();
+       // User GetCurrentUser(HttpContext httpContext);
     }
 
     public class UsersService : IUsersService

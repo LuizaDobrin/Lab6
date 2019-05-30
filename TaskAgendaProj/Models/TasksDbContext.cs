@@ -11,6 +11,14 @@ namespace TaskAgendaProj.Models
         public TasksDbContext(DbContextOptions<TasksDbContext> options) : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>(entity => {
+                entity.HasIndex(u => u.Username).IsUnique();            //pune un index pe coloana username
+            });
+
+            
+        }
 
         public DbSet<Task> Tasks { get; set; }
         public List<Comment> Comments { get; set; }
