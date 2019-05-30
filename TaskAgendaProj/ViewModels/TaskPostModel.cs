@@ -44,7 +44,7 @@ namespace TaskAgenda.ViewModels
                 Importance = task.Importance,
                 Status = task.Status,
                 DateTimeClosedAt = task.DateTimeClosedAt,
-                //Comments = task.Comments
+                Comments = task.Comments
             };
         }
 

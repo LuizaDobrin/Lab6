@@ -63,6 +63,7 @@ namespace TaskAgendaProj
                     In = "header"
                 });
 
+                c.DocumentFilter<SwaggerSecurityRequirementsDocumentFilter>();
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);

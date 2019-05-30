@@ -44,7 +44,7 @@ namespace TaskAgendaProj.Services
         public Task Delete(int id)
         {
             var existing = context.Tasks
-                //.Include(x => x.Comments)
+                .Include(x => x.Comments)
                 .FirstOrDefault(task => task.Id == id);
             if (existing == null)
             {
