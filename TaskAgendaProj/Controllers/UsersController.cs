@@ -50,6 +50,7 @@ namespace TaskAgendaProj.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
