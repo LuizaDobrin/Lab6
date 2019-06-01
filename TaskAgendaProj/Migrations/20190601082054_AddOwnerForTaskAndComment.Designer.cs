@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskAgendaProj.Models;
 
 namespace TaskAgendaProj.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    partial class TasksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190601082054_AddOwnerForTaskAndComment")]
+    partial class AddOwnerForTaskAndComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,15 +31,15 @@ namespace TaskAgendaProj.Migrations
 
                     b.Property<int?>("OwnerId");
 
-                    b.Property<int?>("TaskId");
-
                     b.Property<string>("Text");
+
+                    b.Property<int?>("taskId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("taskId");
 
                     b.ToTable("Comment");
                 });
@@ -85,8 +87,6 @@ namespace TaskAgendaProj.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<int>("UserRole");
-
                     b.Property<string>("Username");
 
                     b.HasKey("Id");
@@ -104,10 +104,9 @@ namespace TaskAgendaProj.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId");
 
-                    b.HasOne("TaskAgendaProj.Models.Task", "Task")
+                    b.HasOne("TaskAgendaProj.Models.Task", "task")
                         .WithMany("Comments")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("taskId");
                 });
 
             modelBuilder.Entity("TaskAgendaProj.Models.Task", b =>

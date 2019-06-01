@@ -18,8 +18,9 @@ namespace TaskAgendaProj.Services
     {
         UserGetModel Authenticate(string username, string password);
         UserGetModel Register(RegisterPostModel registerInfo);
+        User GetCurrentUser(HttpContext httpContext);
         IEnumerable<UserGetModel> GetAll();
-       // User GetCurrentUser(HttpContext httpContext);
+       
     }
 
     public class UsersService : IUsersService
@@ -104,6 +105,14 @@ namespace TaskAgendaProj.Services
             });
             context.SaveChanges();
             return Authenticate(registerInfo.Username, registerInfo.Password);
+        }
+
+        public User GetCurrentUser(HttpContext httpContext)
+        {
+            string username = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            //string accountType = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.AuthenticationMethod).Value;
+            //return _context.Users.FirstOrDefault(u => u.Username == username && u.AccountType.ToString() == accountType);
+            return context.Users.FirstOrDefault(u => u.Username == username);
         }
 
         public IEnumerable<UserGetModel> GetAll()

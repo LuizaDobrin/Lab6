@@ -18,9 +18,11 @@ namespace TaskAgendaProj.Controllers
     public class TasksController : ControllerBase
     {
         private ITaskService taskService;
-        public TasksController(ITaskService taskService)
+        private IUsersService usersService;
+        public TasksController(ITaskService taskService, IUsersService usersService)
         {
             this.taskService = taskService;
+            this.usersService = usersService;
         }
        
         /// <summary>
@@ -61,9 +63,15 @@ namespace TaskAgendaProj.Controllers
         [HttpPost]
         public void Post([FromBody] TaskPostModel task)
         {
-            taskService.Create(task);
+            User addedBy = usersService.GetCurrentUser(HttpContext);
+            //if (addedBy.UserRole == UserRole.UserManager)
+            //{
+            //    return Forbid();
+            //}
+            taskService.Create(task, addedBy);
         }
-        
+       
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

@@ -17,7 +17,11 @@ namespace TaskAgendaProj.Models
                 entity.HasIndex(u => u.Username).IsUnique();            //pune un index pe coloana username
             });
 
-            
+            builder.Entity<Comment>()
+                .HasOne(f => f.Task)
+                .WithMany(c => c.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         public DbSet<Task> Tasks { get; set; }

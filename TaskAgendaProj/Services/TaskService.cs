@@ -16,7 +16,7 @@ namespace TaskAgendaProj.Services
 
         Task GetById(int id);
 
-        Task Create(TaskPostModel task);
+        Task Create(TaskPostModel task, User addedBy);
 
         Task Upsert(int id, Task task);
 
@@ -34,10 +34,11 @@ namespace TaskAgendaProj.Services
         }
 
 
-        public Task Create(TaskPostModel task)
+        public Task Create(TaskPostModel task, User addedBy)
         {
             
             Task toAdd = TaskPostModel.ToTask(task);
+            toAdd.Owner = addedBy;
             context.Tasks.Add(toAdd);
             context.SaveChanges();
             return toAdd;
