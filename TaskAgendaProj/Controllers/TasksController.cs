@@ -57,6 +57,7 @@ namespace TaskAgendaProj.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // POST: api/Expenses
+        [Authorize]
         [HttpPost]
         public void Post([FromBody] TaskPostModel task)
         {
@@ -65,8 +66,9 @@ namespace TaskAgendaProj.Controllers
         
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize]
+
         // PUT: api/Expenses/2
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Task task)
         {
@@ -74,8 +76,9 @@ namespace TaskAgendaProj.Controllers
             var result = taskService.Upsert(id, task);
             return Ok(result);
         }
-        
+
         // DELETE: api/ApiWithActions/2
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
