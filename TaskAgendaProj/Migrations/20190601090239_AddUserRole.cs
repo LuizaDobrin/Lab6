@@ -10,6 +10,7 @@ namespace TaskAgendaProj.Migrations
                 name: "FK_Comment_Tasks_taskId",
                 table: "Comment");
 
+
             migrationBuilder.RenameColumn(
                 name: "taskId",
                 table: "Comment",
