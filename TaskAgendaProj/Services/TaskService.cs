@@ -18,7 +18,7 @@ namespace TaskAgendaProj.Services
 
         Task Create(TaskPostModel task, User addedBy);
 
-        Task Upsert(int id, Task task);
+        Task Upsert(int id, TaskPostModel task);
 
         Task Delete(int id);
        
@@ -53,6 +53,12 @@ namespace TaskAgendaProj.Services
             {
                 return null;
             }
+            ////o varianta de asterge comentariile unui task
+            //foreach(var comment in existing.Coments)
+            //{
+            //    context.Coments.Remove(comment);
+            //}
+
             context.Tasks.Remove(existing);
             context.SaveChanges();
             return existing;
@@ -90,22 +96,22 @@ namespace TaskAgendaProj.Services
                 .FirstOrDefault(e => e.Id == id);
         }
 
-        public Task Upsert(int id, Task task)
+        public Task Upsert(int id, TaskPostModel task)
         {
-            var existing = context.Tasks.AsNoTracking().FirstOrDefault(e => e.Id == id);
+            var existing = context.Tasks.AsNoTracking().FirstOrDefault(f => f.Id == id);
             if (existing == null)
             {
-                context.Tasks.Add(task);
+                Task toAdd = TaskPostModel.ToTask(task);
+                context.Tasks.Add(toAdd);
                 context.SaveChanges();
-                return task;
-
+                return toAdd;
             }
 
-            task.Id = id;
-            context.Tasks.Update(task);
+            Task toUpdate = TaskPostModel.ToTask(task);
+            toUpdate.Id = id;
+            context.Tasks.Update(toUpdate);
             context.SaveChanges();
-            return task;
+            return toUpdate;
         }
-
     }
 }

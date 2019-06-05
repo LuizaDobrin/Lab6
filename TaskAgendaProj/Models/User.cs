@@ -22,9 +22,12 @@ namespace TaskAgendaProj.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public List<Task> Tasks { get; set; }
         [EnumDataType(typeof(UserRole))]
         public UserRole UserRole { get; set; }
-
+       
+        public DateTime DataRegistered { get; set; }
+       
     }
 }
 

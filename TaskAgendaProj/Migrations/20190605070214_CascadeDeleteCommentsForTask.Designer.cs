@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskAgendaProj.Models;
 
 namespace TaskAgendaProj.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    partial class TasksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190605070214_CascadeDeleteCommentsForTask")]
+    partial class CascadeDeleteCommentsForTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,11 +27,17 @@ namespace TaskAgendaProj.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Important");
-
                     b.Property<int?>("OwnerId");
+                    
 
                     b.Property<int?>("TaskId");
+
+
+                    b.Property<bool>("Important");
+
+                    //b.Property<int?>("OwnerId");
+
+                    //b.Property<int?>("TaskId");
 
                     b.Property<string>("Text");
 
@@ -48,6 +56,8 @@ namespace TaskAgendaProj.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("OwnerId");
+
                     b.Property<DateTime>("DateTimeAdded");
 
                     b.Property<DateTime?>("DateTimeClosedAt");
@@ -58,7 +68,7 @@ namespace TaskAgendaProj.Migrations
 
                     b.Property<string>("Importance");
 
-                    b.Property<int?>("OwnerId");
+                   
 
                     b.Property<string>("Status");
 
@@ -87,7 +97,7 @@ namespace TaskAgendaProj.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<int>("UserRole");
+                  //  b.Property<int>("UserRole");
 
                     b.Property<string>("Username");
 

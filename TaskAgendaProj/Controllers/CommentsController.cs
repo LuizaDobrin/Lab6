@@ -24,10 +24,12 @@ namespace TaskAgendaProj.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         // GET: api/Comments
+     //  [Authorize(Roles = "Regular, Admin")]
         [HttpGet]
-        public IEnumerable<CommentGetModel> GetAll([FromQuery]string filter)
+        public PaginatedList<CommentGetModel> Get([FromQuery]string filterString, [FromQuery]int page = 1)
         {
-            return commentService.GetAllFiltered(filter);
+            page = Math.Max(page, 1);
+            return commentService.GetAll(page, filterString);
         }
     }
 }

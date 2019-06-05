@@ -11,7 +11,7 @@ namespace TaskAgendaProj.Services
     public interface ICommentService
     {
 
-        IEnumerable<CommentGetModel> GetAllFiltered(string filter);
+        PaginatedList<CommentGetModel> GetAll(int page, string filterString);
 
     }
 
@@ -25,50 +25,26 @@ namespace TaskAgendaProj.Services
             this.context = context;
         }
 
-        public IEnumerable<CommentGetModel> GetAllFiltered(string filter)
+        public PaginatedList<CommentGetModel> GetAll(int page, string filterString)
         {
 
-            IQueryable<Task> result = context.Tasks.Include(c => c.Comments);
+            IQueryable<Comment> result = context
+                  .Comment
+                  .Where(c => string.IsNullOrEmpty(filterString) || c.Text.Contains(filterString))
+                  .OrderBy(c => c.Id)
+                  .Include(c => c.Task);
+           
 
-            List<CommentGetModel> resultComments = new List<CommentGetModel>();
-            List<CommentGetModel> resultCommentsAll = new List<CommentGetModel>();
+            PaginatedList<CommentGetModel> paginatedResult = new PaginatedList<CommentGetModel>();
+            paginatedResult.CurrentPage = page;
 
-            foreach (Task task in result)
-            {
-                task.Comments.ForEach(c =>
-                {
-                    if (c.Text == null || filter == null)
-                    {
-                        CommentGetModel comment = new CommentGetModel
-                        {
-                            Id = c.Id,
-                            Important = c.Important,
-                            Text = c.Text,
-                            TaskId = task.Id
+            paginatedResult.NumberOfPages = (result.Count() - 1) / PaginatedList<CommentGetModel>.EntriesPerPage + 1;
+            result = result
+                .Skip((page - 1) * PaginatedList<CommentGetModel>.EntriesPerPage)
+                .Take(PaginatedList<CommentGetModel>.EntriesPerPage);
+            paginatedResult.Entries = result.Select(f => CommentGetModel.FromComment(f)).ToList();
 
-                        };
-                        resultCommentsAll.Add(comment);
-                    }
-                    else if (c.Text.Contains(filter))
-                    {
-                        CommentGetModel comment = new CommentGetModel
-                        {
-                            Id = c.Id,
-                            Important = c.Important,
-                            Text = c.Text,
-                            TaskId = task.Id
-
-                        };
-                        resultComments.Add(comment);
-
-                    }
-                });
-            }
-            if (filter == null)
-            {
-                return resultCommentsAll;
-            }
-            return resultComments;
+            return paginatedResult;
         }
     }
 }

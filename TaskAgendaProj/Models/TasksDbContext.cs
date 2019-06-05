@@ -25,7 +25,7 @@ namespace TaskAgendaProj.Models
         }
 
         public DbSet<Task> Tasks { get; set; }
-        public List<Comment> Comments { get; set; }
+        public DbSet<Comment> Comment { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }
