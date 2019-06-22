@@ -46,5 +46,49 @@ namespace TaskAgendaProj.Services
 
             return paginatedResult;
         }
+
+        public Comment GetById(int id)
+        {
+            return context.Comment
+                // .Include(e => e.Comments)
+                .FirstOrDefault(e => e.Id == id);
+        }
+        public Comment Create(CommentPostModel comment, int id)
+        {
+            Comment toAdd = CommentPostModel.ToComment(comment);
+            Task task = context.Tasks.FirstOrDefault(tas => tas.Id == id);
+            task.Comments.Add(toAdd);
+            context.SaveChanges();
+            return toAdd;
+
+
+        }
+
+        public Comment Delete(int id)
+        {
+            var existing = context.Comment.FirstOrDefault(comment => comment.Id == id);
+            if (existing == null)
+            {
+                return null;
+            }
+            context.Comment.Remove(existing);
+            context.SaveChanges();
+            return existing;
+        }
+        //public comment upsert(int id, comment task)
+        //{
+        //    var existing = context.comments.asnotracking().firstordefault(f => f.id == id);
+        //    if (existing == null)
+        //    {
+        //        context.comments.add(task);
+        //        context.savechanges();
+        //        return task;
+        //    }
+        //    task.id = id;
+        //    context.comments.update(task);
+        //    context.savechanges();
+        //    return task;
+        //}
+  
     }
 }

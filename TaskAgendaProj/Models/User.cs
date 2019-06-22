@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskAgendaProj.Models
 {
-    public enum UserRole
-    {
-        Regular,
-        UserManager,
-        Admin,
-    }
+  
 
     public class User
     {
@@ -23,11 +18,11 @@ namespace TaskAgendaProj.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public List<Task> Tasks { get; set; }
-        [EnumDataType(typeof(UserRole))]
-        public UserRole UserRole { get; set; }
-       
-        public DateTime DataRegistered { get; set; }
-       
+        //[EnumDataType(typeof(UserRole))]
+        public bool isRemoved { get; set; }
+        public DateTime DateAdded { get; set; }
+        public IEnumerable<UserUserRole> UserUserRole { get; set; }
+
     }
 }
 

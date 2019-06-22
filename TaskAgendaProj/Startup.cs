@@ -19,6 +19,7 @@ using TaskAgendaProj.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using TaskAgendaProj.Validators;
 
 namespace TaskAgendaProj
 {
@@ -96,7 +97,12 @@ namespace TaskAgendaProj
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IRegisterValidator, RegisterValidator>();
+            services.AddScoped<IUserRoleValidator, UserRoleValidator>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
+            services.AddScoped<IUserUserRoleService, UserUserRoleService>();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

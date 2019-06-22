@@ -6,7 +6,7 @@ using System.Linq;
 
 
 
-namespace TaskAgenda.ViewModels
+namespace TaskAgendaProj.ViewModels
 {
     public class TaskPostModel
     {

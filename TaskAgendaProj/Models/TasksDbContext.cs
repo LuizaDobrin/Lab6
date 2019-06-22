@@ -18,14 +18,22 @@ namespace TaskAgendaProj.Models
             });
 
             builder.Entity<Comment>()
-                .HasOne(f => f.Task)
+                .HasOne(t => t.Task)
                 .WithMany(c => c.Comments)
                 .OnDelete(DeleteBehavior.Cascade);
 
-        }
+            // builder.Entity<Task>()
+            //.HasOne(e => e.Owner)
+            //.WithMany(c => c.Tasks)
+            //.OnDelete(DeleteBehavior.Cascade);
+        
+
+    }
 
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<UserUserRole> UserUserRole { get; set; }
     }
 }

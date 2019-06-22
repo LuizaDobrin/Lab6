@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaskAgenda.ViewModels;
+using TaskAgendaProj.ViewModels;
 //using System.Threading.Tasks;
 using TaskAgendaProj.Models;
-using TaskAgendaProj.ViewModels;
+
 
 namespace TaskAgendaProj.Services
 {

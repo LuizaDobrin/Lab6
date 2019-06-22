@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskAgendaProj.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using TaskAgenda.ViewModels;
+
 
 namespace TaskAgendaProj.Controllers
 {
@@ -96,7 +96,7 @@ namespace TaskAgendaProj.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
       
         // POST: api/Expenses
-        [Authorize(Roles = "Admin,Regular")]
+       // [Authorize(Roles = "Admin,Regular")]
         [HttpPost]
         public void Post([FromBody] TaskPostModel task)
         {

@@ -10,18 +10,18 @@ namespace TaskAgendaProj.ViewModels
 {
     public class UserPostModel
     {
- 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Username { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string UserRole { get; set; }
+        public string UserRoleName { get; set; }
+
 
         private static string ComputeSha256Hash(string rawData)
         {
             // Create a SHA256   
-
+            //TODO: Also use salt
 
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -38,29 +38,28 @@ namespace TaskAgendaProj.ViewModels
             }
         }
 
+
         public static User ToUser(UserPostModel userModel)
         {
-            UserRole rol = TaskAgendaProj.Models.UserRole.Regular;
+            //UserRole rol = Lab3.Models.UserRole.Regular;
 
-            if (userModel.UserRole == "UserManager")
-            {
-                rol = TaskAgendaProj.Models.UserRole.UserManager;
-            }
-            else if (userModel.UserRole == "Admin")
-            {
-                rol = TaskAgendaProj.Models.UserRole.Admin;
-            }
+            //if (userModel.UserRole == "UserManager")
+            //{
+            //    rol = Lab3.Models.UserRole.UserManager;
+            //}
+            //else if (userModel.UserRole == "Admin")
+            //{
+            //    rol = Lab3.Models.UserRole.Admin;
+            //}
 
             return new User
             {
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
-                Username = userModel.Username,
+                Username = userModel.UserName,
                 Email = userModel.Email,
-                Password = userModel.Password,
-                UserRole = rol
+                Password = ComputeSha256Hash(userModel.Password)
             };
         }
     }
 }
-
